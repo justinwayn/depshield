@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<h1>Settings</h1>
+<form method="post" class="form">
+  <label>Your domain (monitored alongside vendors)
+    <input name="domain" value="{{ s.domain }}" placeholder="example.com"></label>
+  <label>Weekly digest email address
+    <input name="digest_to" value="{{ s.digest_to }}" placeholder="you@example.com"></label>
+  <label>Gmail address (SMTP sender)
+    <input name="smtp_user" value="{{ s.smtp_user }}" placeholder="you@gmail.com"></label>
+  <label>Gmail app password <span class="muted">(not your login password —
+    <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener">create one here ↗</a>)</span>
+    <input name="smtp_pass" type="password" value="{{ s.smtp_pass }}"></label>
+  <button class="btn" type="submit">Save</button>
+</form>
+<p><a class="btn small" href="{{ url_for('digest_preview') }}">Preview weekly digest</a></p>
+<p class="muted">Digest sending is free within Gmail's limits (500/day). Nothing is sent until you run the Monday cron job.</p>
+{% endblock %}

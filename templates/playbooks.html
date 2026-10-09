@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Exit plans{% endblock %}
+{% block content %}
+<h1>Exit plans</h1>
+<p class="muted">If a vendor bans you, hikes prices, or dies — here is your way out. Set these up <b>before</b> you need them.</p>
+{% for b in books %}
+<div class="card wide">
+  <h2>{{ b.vendor.name }} <span class="muted">· {{ b.vendor.category }}</span></h2>
+  <p class="muted">{{ b.risk_notes }}</p>
+  <h3>Alternatives</h3>
+  <ul>{% for a in b.playbook.alternatives %}<li>{{ a }}</li>{% endfor %}</ul>
+  <h3>Migration notes</h3>
+  <p>{{ b.playbook.migration_notes }}</p>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Add vendor{% endblock %}
+{% block content %}
+<h1>Add vendor</h1>
+{% if available %}
+<h2>From catalog</h2>
+<p class="muted">These ship with status monitoring, risk scores, and exit plans.</p>
+<ul>
+{% for v in available %}
+<li><b>{{ v.name }}</b> <span class="muted">{{ v.category }} — base risk {{ v.base_risk }}</span>
+<form action="{{ url_for('vendor_add') }}" method="post" style="display:inline">
+  <input type="hidden" name="name" value="{{ v.name }}">
+  <input type="hidden" name="category" value="{{ v.category }}">
+  <input type="hidden" name="status_api" value="{{ v.status_api }}">
+  <input type="hidden" name="status_page" value="{{ v.status_page }}">
+  <button class="btn small" type="submit">Add</button>
+</form></li>
+{% endfor %}
+</ul>
+{% endif %}
+<h2>Custom vendor</h2>
+<form method="post" class="form">
+  <label>Name <input name="name" required placeholder="Acme DNS"></label>
+  <label>Category <input name="category" placeholder="DNS / CDN / Payments / Email / Hosting"></label>
+  <label>Status API URL (optional, statuspage.io JSON) <input name="status_api" placeholder="https://status.acme.com/api/v2/summary.json"></label>
+  <label>Status page URL <input name="status_page" placeholder="https://status.acme.com"></label>
+  <button class="btn" type="submit">Add vendor</button>
+</form>
+{% endblock %}

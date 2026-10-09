@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Vendor risk radar</h1>
+<p class="muted">
+  {% if domain %}Your domain <b>{{ domain }}</b> — 7-day uptime <b>{{ domain_up if domain_up is not none else 'n/a' }}%</b>.
+  {% else %}<a href="{{ url_for('settings') }}">Add your domain</a> to monitor it alongside your vendors.{% endif %}
+</p>
+
+<div class="grid">
+{% for c in cards %}
+  <a class="card risk-{{ c.level|lower }}" href="{{ url_for('vendor_detail', vendor_id=c.id) }}">
+    <div class="card-top">
+      <b>{{ c.name }}</b>
+      <span class="score">{{ c.score }}</span>
+    </div>
+    <div class="muted">{{ c.category }} · {{ c.level }} RISK</div>
+    <div class="muted">7d health: {{ c.uptime_7d if c.uptime_7d is not none else 'n/a' }}% {% if not c.enabled %}· paused{% endif %}</div>
+  </a>
+{% endfor %}
+  <a class="card add" href="{{ url_for('vendor_add') }}">＋ Add vendor</a>
+</div>
+
+<h2>Latest alerts</h2>
+{% if alerts %}
+<ul class="alerts">
+{% for a in alerts %}
+  <li><span class="kind">{{ a.kind }}</span> <b>{{ a.title }}</b> <span class="muted">{{ a.created_at|ts }}</span></li>
+{% endfor %}
+</ul>
+{% else %}
+<p class="muted">No alerts yet. Checks run every 15 minutes via cron — see README.</p>
+{% endif %}
+{% endblock %}

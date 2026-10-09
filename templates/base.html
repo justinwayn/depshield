@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DepShield — {% block title %}Vendor-risk radar{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<nav>
+  <a class="brand" href="{{ url_for('dashboard') }}">🛡️ DepShield</a>
+  <a href="{{ url_for('dashboard') }}">Dashboard</a>
+  <a href="{{ url_for('playbooks') }}">Exit plans</a>
+  <a href="{{ url_for('alerts') }}">Alerts{% if unread %} <span class="badge">{{ unread }}</span>{% endif %}</a>
+  <a href="{{ url_for('settings') }}">Settings</a>
+  <form action="{{ url_for('check_now') }}" method="post" style="display:inline">
+    <button class="btn small" type="submit">↻ Check now</button>
+  </form>
+</nav>
+<main>
+{% block content %}{% endblock %}
+</main>
+<footer><small>DepShield runs on your own machine. Your data never leaves it.</small></footer>
+</body>
+</html>

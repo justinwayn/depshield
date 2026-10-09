@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Alerts{% endblock %}
+{% block content %}
+<h1>Alerts</h1>
+{% if alerts %}
+<ul class="alerts">
+{% for a in alerts %}
+<li><span class="kind">{{ a.kind }}</span> <b>{{ a.title }}</b><br>
+<span class="muted">{{ a.created_at|ts }}{% if a.body %} — {{ a.body }}{% endif %}</span></li>
+{% endfor %}
+</ul>
+{% else %}<p class="muted">No alerts. Quiet is good.</p>{% endif %}
+{% endblock %}

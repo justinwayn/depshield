@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ v.name }}{% endblock %}
+{% block content %}
+<h1>{{ v.name }} <span class="score risk-{{ risk.level|lower }}">{{ risk.score }} · {{ risk.level }}</span></h1>
+<p class="muted">{{ v.category }} · <a href="{{ status_page }}" target="_blank" rel="noopener">status page ↗</a></p>
+
+<h2>Why this score</h2>
+<ul>
+{% for r in risk.reasons %}<li>{{ r }}</li>{% endfor %}
+</ul>
+<p class="muted">{{ risk_notes }}</p>
+
+<h2>Exit plan — if {{ v.name }} turns on you</h2>
+{% if playbook %}
+<h3>Zero-cost alternatives</h3>
+<ul>{% for a in playbook.alternatives %}<li>{{ a }}</li>{% endfor %}</ul>
+<h3>Migration notes</h3>
+<p>{{ playbook.migration_notes }}</p>
+{% else %}
+<p class="muted">No curated playbook for this vendor yet — add one in vendors.py.</p>
+{% endif %}
+
+<h2>Recent incidents</h2>
+{% if incidents %}
+<ul class="alerts">
+{% for i in incidents %}
+<li><b>{{ i.title }}</b> <span class="muted">{{ i.impact or '' }} · {{ i.seen_at|ts }}{% if i.resolved %} · resolved{% endif %}</span>
+{% if i.url %} <a href="{{ i.url }}" target="_blank" rel="noopener">↗</a>{% endif %}</li>
+{% endfor %}
+</ul>
+{% else %}<p class="muted">None recorded.</p>{% endif %}
+
+<h2>Recent checks</h2>
+<table>
+<tr><th>Time</th><th>Result</th><th>Latency</th><th>Detail</th></tr>
+{% for c in checks %}
+<tr><td>{{ c.checked_at|ts }}</td><td>{{ '✅' if c.ok else '❌' }}</td><td>{{ c.latency_ms or '—' }} ms</td><td class="muted">{{ c.detail or '' }}</td></tr>
+{% endfor %}
+</table>
+
+<form action="{{ url_for('vendor_toggle', vendor_id=v.id) }}" method="post" style="display:inline">
+  <button class="btn small" type="submit">{{ 'Pause' if v.enabled else 'Resume' }} monitoring</button>
+</form>
+<form action="{{ url_for('vendor_delete', vendor_id=v.id) }}" method="post" style="display:inline"
+      onsubmit="return confirm('Remove {{ v.name }}?')">
+  <button class="btn small danger" type="submit">Remove</button>
+</form>
+{% endblock %}
