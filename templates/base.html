@@ -13,6 +13,7 @@
   <a href="{{ url_for('playbooks') }}">Exit plans</a>
   <a href="{{ url_for('alerts') }}">Alerts{% if unread %} <span class="badge">{{ unread }}</span>{% endif %}</a>
   <a href="{{ url_for('settings') }}">Settings</a>
+  <a href="{{ url_for('pricing') }}">Pricing</a>
   <form action="{{ url_for('check_now') }}" method="post" style="display:inline">
     <button class="btn small" type="submit">↻ Check now</button>
   </form>

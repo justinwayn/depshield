@@ -156,6 +156,10 @@ def settings():
     return render_template("settings.html", s=s, unread=db.unread_count())
 
 
+@app.route("/pricing")
+def pricing():
+    return render_template("pricing.html", unread=db.unread_count())
+
 @app.route("/digest-preview")
 def digest_preview():
     from digest import build_digest
